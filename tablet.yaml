@@ -1,0 +1,361 @@
+  cch:
+  exceptions:
+    - conditions:
+        user: tablet
+      config:
+        clock_format: '12'
+        date_locale: en
+        default_tab: []
+        disable: false
+        hide_config: true
+        hide_tabs: []
+        kiosk_mode: true
+        menu: hide
+        notifications: show
+        options: hide
+        show_tabs: []
+        sidebar_closed: true
+        swipe: true
+        swipe_amount: '15'
+        swipe_animate: none
+        voice: hide
+    - conditions: {}
+      config:
+        clock_format: '12'
+        date_locale: en
+        default_tab: []
+        hide_tabs: []
+        menu: hide
+        notifications: show
+        options: clock
+        show_tabs: []
+        voice: show
+  redirect: false
+  sidebar_swipe: false
+resources:
+  - type: js
+    url: /community_plugin/calendar-card/calendar-card.js
+  - type: module
+    url: /community_plugin/weather-card/weather-card.js
+  - type: module
+    url: /community_plugin/mini-media-player/mini-media-player.js
+  - type: module
+    url: /community_plugin/mini-graph-card/mini-graph-card.js
+  - type: module
+    url: /community_plugin/compact-custom-header/compact-custom-header.js
+  - type: module
+    url: /community_plugin/lovelace-card-mod/card-mod.js
+  - type: module
+    url: /community_plugin/bignumber-card/bignumber-card.js
+  - type: module
+    url: /community_plugin/compact-custom-header/compact-custom-header.js
+  - type: js
+    url: /community_plugin/miflora-card/miflora-card.js
+  - type: js
+    url: /community_plugin/vertical-stack-in-card/vertical-stack-in-card.js
+  - type: module
+    url: /community_plugin/simple-weather-card/simple-weather-card.js
+title: Home
+views:  
+  - cards:
+      - cards:
+          - cards:
+              - cards:
+                  - entity: sensor.my_time
+                    scale: 100px
+                    style: |
+                      ha-card {
+                        --primary-text-color: #bf6ee0;            
+                        padding: 0px;
+                      }
+                    type: 'custom:bignumber-card'
+                  - entity: sensor.my_date
+                    scale: 30px
+                    style: |
+                      ha-card {                       
+                        padding: 8px;
+                      }
+                    type: 'custom:bignumber-card'
+                type: 'custom:vertical-stack-in-card'
+              - dateBottomFormat: ddd
+                dateTopFormat: DD
+                entities:
+                  - entity: calendar.holidays_in_united_states
+                    name: calendar.holidays_in_united_states                  
+                  - entity: calendar.pittsburgh_panthers
+                    name: calendar.pittsburgh_panthers
+                  - entity: calendar.pittsburgh_pirates
+                    name: calendar.pittsburgh_pirates
+                  - entity: calendar.penguins
+                    name: calendar.penguins
+                  - entity: calendar.pittsburgh_steelers
+                    name: calendar.pittsburgh_steelers
+                  - entity: calendar.bills_and_events
+                    name: calendar.bills_and_events
+                hideHeader: false
+                hideTime: false
+                numberOfDays: '3'
+                progressBar: true
+                showEventOrigin: false
+                showLocation: false
+                showLocationIcon: true
+                showMultiDay: false
+                startFromToday: true
+                style: |
+                  ha-card {
+                  font-size: 20px;
+                  }
+                timeFormat: 'h:mma'
+                title: Calendar
+                type: 'custom:calendar-card'
+            panel: true
+            type: vertical-stack
+          - cards:
+              - color_thresholds:
+                  - color: '#0066ff'
+                    value: 50
+                  - color: '#00cc00'
+                    value: 65
+                  - color: '#ffff00'
+                    value: 75
+                  - color: '#ff9933'
+                    value: 80
+                  - color: '#ff0000'
+                    value: 85
+                color_thresholds_transition: smooth
+                decimals: 1
+                entities:
+                  - entity: sensor.outside_temp
+                    name: Outside
+                fill: fade
+                font_size: 400
+                font_size_header: 30
+                show:
+                  icon: true
+                  icon_adaptive_color: true
+                type: 'custom:mini-graph-card'
+              - cards:
+                  - backdrop:
+                      day: var(--primary-color)
+                      fade: true
+                      night: '#40445a'
+                    entity: weather.dark_sky
+                    name: ' '
+                    style: |
+                      ha-card {
+                        font-size: 30px;
+                        font-weight: normal;
+                      }
+                      .weather__info__state {
+                        font-size: 25px;
+                      }
+                      .weather__info__title {
+                        font-size: 0px;
+                      }
+                    type: 'custom:simple-weather-card'
+                  - columns: 3
+                    entities:
+                      - entity: sensor.dark_sky_daytime_high_temperature_1d
+                        icon: 'mdi:thermometer-chevron-up'
+                        name: H
+                      - entity: sensor.dark_sky_overnight_low_temperature_1d
+                        icon: 'mdi:thermometer-chevron-down'
+                        name: L
+                      - entity: sensor.dark_sky_precip_probability_1d
+                        icon: 'mdi:umbrella'
+                        name: ' '
+                    show_icon: false
+                    show_name: false
+                    style: |
+                      ha-card {
+                        font-size: 35px;
+                        font-weight: bolder;
+                      }
+                      .card-header {
+                        #text-align: center;                        
+                        #padding: 0px;       
+                        font-weight: normal;
+                      }
+                    title: Tomorrow
+                    type: glance
+                type: vertical-stack
+              - cards:
+                  - entity: group.good_smellers
+                    hold_action:
+                      action: more-info
+                    icon: 'mdi:flower'
+                    icon_height: 130px
+                    name: Air Fresheners
+                    show_icon: true
+                    show_name: true
+                    style: |
+                      ha-icon {
+                        --paper-item-icon-color: [[ if(group.good_smellers == "on", "#bf6ee0", "") ]];
+                      }
+                    tap_action:
+                      action: toggle
+                    type: entity-button
+                  - entity: group.outside_lights
+                    hold_action:
+                      action: more-info
+                    icon: 'mdi:lightbulb'
+                    icon_height: 130px
+                    show_icon: true
+                    show_name: true
+                    style: |
+                      ha-icon {
+                        --paper-item-icon-color: [[ if(group.outside_lights == "on", "yellow", "") ]];
+                      }
+                    tap_action:
+                      action: toggle
+                    type: entity-button
+                type: horizontal-stack
+            type: vertical-stack
+          - cards:
+              - cards:
+                  - color_thresholds:
+                      - color: '#0066ff'
+                        value: 50
+                      - color: '#00cc00'
+                        value: 65
+                      - color: '#ffff00'
+                        value: 75
+                      - color: '#ff9933'
+                        value: 80
+                      - color: '#ff0000'
+                        value: 85
+                    color_thresholds_transition: smooth
+                    entities:
+                      - sensor.bedroom_temp
+                    font_size: 150
+                    font_size_header: 20
+                    show:
+                      icon: true
+                      icon_adaptive_color: true
+                    type: 'custom:mini-graph-card'
+                  - color_thresholds:
+                      - color: '#0066ff'
+                        value: 50
+                      - color: '#00cc00'
+                        value: 65
+                      - color: '#ffff00'
+                        value: 75
+                      - color: '#ff9933'
+                        value: 80
+                      - color: '#ff0000'
+                        value: 85
+                    color_thresholds_transition: smooth
+                    entities:
+                      - sensor.den_temp
+                    font_size: 150
+                    font_size_header: 20
+                    show:
+                      icon: true
+                      icon_adaptive_color: true
+                    type: 'custom:mini-graph-card'
+                type: horizontal-stack
+              - cards:
+                  - color_thresholds:
+                      - color: '#0066ff'
+                        value: 50
+                      - color: '#00cc00'
+                        value: 65
+                      - color: '#ffff00'
+                        value: 75
+                      - color: '#ff9933'
+                        value: 80
+                      - color: '#ff0000'
+                        value: 85
+                    color_thresholds_transition: smooth
+                    entities:
+                      - sensor.kitchen_temp
+                    font_size: 150
+                    font_size_header: 20
+                    show:
+                      icon: true
+                      icon_adaptive_color: true
+                    type: 'custom:mini-graph-card'
+                  - color_thresholds:
+                      - color: '#0066ff'
+                        value: 50
+                      - color: '#00cc00'
+                        value: 65
+                      - color: '#ffff00'
+                        value: 75
+                      - color: '#ff9933'
+                        value: 80
+                      - color: '#ff0000'
+                        value: 85
+                    color_thresholds_transition: smooth
+                    entities:
+                      - sensor.livingroom_temp
+                    font_size: 150
+                    font_size_header: 20
+                    show:
+                      icon: true
+                      icon_adaptive_color: true
+                    type: 'custom:mini-graph-card'
+                type: horizontal-stack
+              - entity: alarm_control_panel.home_alarm
+                hold_action:
+                  action: none
+                icon: 'mdi:shield-home'
+                icon_height: 178px
+                show_icon: true
+                show_name: true
+                style: >
+                  ha-icon {
+
+                  --paper-item-icon-color: [[ if(alarm_control_panel.home_alarm
+                  == "disarmed", "#0DA035", if(alarm_control_panel.home_alarm ==
+                  "armed_home", "#DF4C1E", if(alarm_control_panel.home_alarm ==
+                  "armed_away", "#df4c1e", "yellow" ))) ]];
+
+
+                  }
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace/11
+                type: entity-button
+              - cards:
+                  - entity: lock.kitchen_door_locked
+                    hold_action:
+                      action: more-info
+                    icon_height: 130px
+                    show_icon: true
+                    show_name: true
+                    style: >
+                      ha-icon {
+
+                      --paper-item-icon-color: [[ if(lock.kitchen_door_locked ==
+                      "unlocked", "#0DA035", "#df4c1e") ]];
+
+                      }
+                    tap_action:
+                      action: toggle
+                    type: entity-button
+                  - entity: cover.garage_door
+                    hold_action:
+                      action: more-info
+                    icon: 'mdi:garage'
+                    icon_height: 130px
+                    show_icon: true
+                    show_name: true
+                    style: >
+                      ha-card {
+
+                      --paper-item-icon-color: [[ if(cover.garage_door ==
+                      "open", "#0DA035", "#df4c1e") ]];
+
+                      }
+                    tap_action:
+                      action: toggle
+                    type: entity-button
+                type: horizontal-stack
+            name: Home
+            type: vertical-stack
+        type: horizontal-stack
+    badges: []
+    icon: 'mdi:tablet'
+    panel: true
+    title: tablet
